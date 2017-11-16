@@ -45,6 +45,7 @@ namespace StorageRestApiAuth
                       md5);
 
             // Now turn it into a byte array.
+
             byte[] SignatureBytes = Encoding.UTF8.GetBytes(MessageSignature);
 
             // Create the HMACSHA256 version of the storage key.
@@ -94,7 +95,7 @@ namespace StorageRestApiAuth
                 sb.Append(headerBuilder.ToString()).Append("\n");
             }
             return sb.ToString();
-        }
+        }      
 
         /// <summary>
         /// This part of the signature string represents the storage account 
@@ -104,41 +105,23 @@ namespace StorageRestApiAuth
         /// </summary>
         /// <param name="address">The URI of the storage service.</param>
         /// <param name="accountName">The storage account name.</param>
-        /// <returns></returns>
+        /// <returns>String representing the canonicalized resource.</returns>
         private static string GetCanonicalizedResource(Uri address, string storageAccountName)
         {
-            // The absolute path is "/" because for we're getting it a list of containers.
+            // The absolute path is "/" because for we're getting a list of containers.
             StringBuilder sb = new StringBuilder("/").Append(storageAccountName).Append(address.AbsolutePath);
-            NameValueCollection values2 = new NameValueCollection();
 
             // Address.Query is the resource, such as "?comp=list".
             // This ends up with a NameValueCollection with 1 entry having key=comp, value=list.
             // It will have more entries if you have more query parameters.
             NameValueCollection values = HttpUtility.ParseQueryString(address.Query);
-            foreach (string str2 in values.Keys)
+
+            foreach (var item in values.AllKeys.OrderBy(k => k))
             {
-                ArrayList list = new ArrayList(values.GetValues(str2));
-                list.Sort();
-                StringBuilder builder2 = new StringBuilder();
-                foreach (object obj2 in list)
-                {
-                    if (builder2.Length > 0)
-                    {
-                        builder2.Append(",");
-                    }
-                    builder2.Append(obj2.ToString());
-                }
-                values2.Add((str2 == null) ? str2 : str2.ToLowerInvariant(), builder2.ToString());
-            }
-            ArrayList list2 = new ArrayList(values2.AllKeys);
-            list2.Sort();
-            foreach (string str3 in list2)
-            {
-                StringBuilder builder3 = new StringBuilder(string.Empty);
-                builder3.Append(str3).Append(":").Append(values2[str3]).Append("\n");
-                sb.Append(builder3.ToString());
+                sb.Append('\n').Append(item).Append(':').Append(values[item]);
             }
             return sb.ToString();
+
         }
     }
 }
