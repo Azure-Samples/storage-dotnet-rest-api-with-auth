@@ -1,17 +1,19 @@
 ﻿namespace StorageRestApiAuth
 {
     using System;
-    using System.Threading;
-    using System.Threading.Tasks;
     using System.Globalization;
     using System.Net;
     using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml.Linq;
 
     internal static class Program
     {
-        static string StorageAccountName = "YOURSTORAGEACCOUNTNAME";
-        static string StorageAccountKey = "YOURSTORAGEACCOUNTKEY";
+        //        static string StorageAccountName = "YOURSTORAGEACCOUNTNAME";
+        //        static string StorageAccountKey = "YOURSTORAGEACCOUNTKEY";
+        static string StorageAccountName = "contosorest";
+        static string StorageAccountKey = "C/rhFTgzLiaRm62lLy5P9EyVit0WZ1MOnO7sXPIEjYSXiABBqV4/dHWEAKquTqeBAn4k4QdE7R1Ke7cgxCUxcg==";
 
         private static void Main()
         {
@@ -48,7 +50,7 @@
                 // Add the request headers for x-ms-date and x-ms-version.
                 DateTime now = DateTime.UtcNow;
                 httpRequestMessage.Headers.Add("x-ms-date", now.ToString("R", CultureInfo.InvariantCulture));
-                httpRequestMessage.Headers.Add("x-ms-version", "2014-02-14");
+                httpRequestMessage.Headers.Add("x-ms-version", "2017-04-17");
                 // If you need any additional headers, add them here before creating
                 //   the authorization header. 
 

@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
-using System.Collections.Specialized;
+using System.Text;
 using System.Web;
-using System.Collections;
 
 namespace StorageRestApiAuth
 {
@@ -26,8 +25,10 @@ namespace StorageRestApiAuth
         /// <param name="storageAccountKey">The access key for the storage account to be used.</param>
         /// <param name="now">Date/Time stamp for now.</param>
         /// <param name="httpRequestMessage">The HttpWebRequest that needs an auth header.</param>
-        /// <param name="ifMatch">Can someone please give an example of this?</param>
-        /// <param name="md5">Can someone please explain how it's used?</param>
+        /// <param name="ifMatch">Provide an eTag, and it will only make changes
+        /// to a blob if the current eTag matches, to ensure you don't overwrite someone else's changes.</param>
+        /// <param name="md5">Provide the md5 and it will check and make sure it matches the blob's md5.
+        /// If it doesn't match, it won't return a value.</param>
         /// <returns></returns>
         internal static AuthenticationHeaderValue GetAuthorizationHeader(
            string storageAccountName, string storageAccountKey, DateTime now,
@@ -45,7 +46,6 @@ namespace StorageRestApiAuth
                       md5);
 
             // Now turn it into a byte array.
-
             byte[] SignatureBytes = Encoding.UTF8.GetBytes(MessageSignature);
 
             // Create the HMACSHA256 version of the storage key.
@@ -55,8 +55,10 @@ namespace StorageRestApiAuth
             string signature = Convert.ToBase64String(SHA256.ComputeHash(SignatureBytes));
 
             // This is the actual header that will be added to the list of request headers.
-            return new AuthenticationHeaderValue("SharedKey",
-               storageAccountName + ":" + Convert.ToBase64String(SHA256.ComputeHash(SignatureBytes)));
+            // You can stop the code here and look at the value of 'authHV' before it is returned.
+            AuthenticationHeaderValue authHV = new AuthenticationHeaderValue("SharedKey",
+                storageAccountName + ":" + Convert.ToBase64String(SHA256.ComputeHash(SignatureBytes)));
+            return authHV;
         }
 
         /// <summary>
@@ -120,6 +122,7 @@ namespace StorageRestApiAuth
             {
                 sb.Append('\n').Append(item).Append(':').Append(values[item]);
             }
+
             return sb.ToString();
 
         }
