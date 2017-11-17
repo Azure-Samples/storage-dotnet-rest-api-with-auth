@@ -10,11 +10,9 @@
 
     internal static class Program
     {
-        //        static string StorageAccountName = "YOURSTORAGEACCOUNTNAME";
-        //        static string StorageAccountKey = "YOURSTORAGEACCOUNTKEY";
-        static string StorageAccountName = "contosorest";
-        static string StorageAccountKey = "C/rhFTgzLiaRm62lLy5P9EyVit0WZ1MOnO7sXPIEjYSXiABBqV4/dHWEAKquTqeBAn4k4QdE7R1Ke7cgxCUxcg==";
-
+        static string StorageAccountName = "YOURSTORAGEACCOUNTNAME";
+        static string StorageAccountKey = "YOURSTORAGEACCOUNTKEY";
+        
         private static void Main()
         {
             // List the containers in a storage account.
