@@ -16,7 +16,7 @@
         private static void Main()
         {
             // List the containers in a storage account.
-            ListContainersAsync(StorageAccountName, StorageAccountKey, CancellationToken.None).GetAwaiter().GetResult();
+            ListContainersAsyncREST(StorageAccountName, StorageAccountKey, CancellationToken.None).GetAwaiter().GetResult();
 
             Console.WriteLine("Press any key to continue.");
             Console.ReadLine();
@@ -29,7 +29,7 @@
         /// then check the returned status code. If it's OK (200), it will 
         /// parse the response and show the list of containers found.
         /// </summary>
-        private static async Task ListContainersAsync(string storageAccountName, string storageAccountKey, CancellationToken cancellationToken)
+        private static async Task ListContainersAsyncREST(string storageAccountName, string storageAccountKey, CancellationToken cancellationToken)
         {
 
             // Construct the URI. This will look like this:
