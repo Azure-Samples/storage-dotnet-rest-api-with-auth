@@ -123,7 +123,7 @@ namespace StorageRestApiAuth
                 sb.Append('\n').Append(item).Append(':').Append(values[item]);
             }
 
-            return sb.ToString();
+            return sb.ToString().ToLower();
 
         }
     }
